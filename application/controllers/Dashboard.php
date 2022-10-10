@@ -45,6 +45,29 @@ class Dashboard extends MY_Controller {
     public function algorithm()
     {
         $fuels = $this->input->get('fuel');
+        if( !$fuels ) return redirect( base_url() );
         
+        $stations = $this->stock_model->stock( NULL, $fuels )->result();
+        $ways = [];
+        foreach ($stations as $station) {
+            if( !in_array($station->id, $ways) ) {
+                $ways[] = (object) [
+                    'id' => $station->station_id,
+                    'nama_spbu' => $station->nama_spbu,
+                    'longi' => $station->longi, 
+                    'lat' => $station->lat
+                ];
+            }   
+        }
+        print_r( $ways );
     }
+
+    public function ambil_spbu_json()
+    {
+        $stations = $this->station_model->station()->result();
+        
+        header('Content-Type: application/json');
+        echo json_encode( $stations );
+    }
+
 }

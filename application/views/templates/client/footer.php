@@ -8,8 +8,10 @@
         </div>
       </footer>
 
+      <input type="hidden" name="url" id="url" value="<?= base_url() ?>">
+
       <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAx0Qi8EEh2DnwUoAtwMR5-iDIdhbdRIXw&callback=initMap&v=weekly"
         defer
       ></script>
       <script src="<?= base_url('assets/client/') ?>js/plugins-core/swiper-bundle.js"></script>

@@ -36,9 +36,17 @@ class Stock_model extends CI_Model {
         $this->db->select( $this->_table . '.*' );
         $this->db->select( 'fuel.nama AS nama_bahan_bakar' );
         $this->db->select( 'station.nama AS nama_spbu' );
+        $this->db->select( 'station.longi AS longi' );
+        $this->db->select( 'station.lat AS lat' );
         
         if( $station_id ) $this->db->where( $this->_table . '.station_id', $station_id);
-        if( $fuel_id ) $this->db->where( $this->_table . '.fuel_id', $fuel_id);
+        if( $fuel_id ) {
+            if( !is_array($fuel_id) ) {
+                $fuel_id = [$fuel_id];
+            }
+            $this->db->where_in( $this->_table . '.fuel_id', $fuel_id);
+            $this->db->where( $this->_table . '.status', 1 );
+        }
 
         $this->db->join(
             'fuel',

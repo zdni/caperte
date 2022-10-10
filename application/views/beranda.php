@@ -36,8 +36,8 @@
               <ul>
                 <?php foreach ($fuels as $fuel) { ?>
                   <li class="mb-2 flex items-center">
-                    <input class="accent-blue-500 w-4 h-4 mr-3 border" type="checkbox" id="vehicle1" name="vehicle1" value="<?= $fuel->id ?>"/>
-                    <label for="vehicle1" class="text-gray-500 dark:text-gray-300"> <?= $fuel->nama ?></label>
+                    <input class="accent-blue-500 w-4 h-4 mr-3 border" type="checkbox" id="fuel[]" name="fuel[]" value="<?= $fuel->id ?>"/>
+                    <label for="fuel[]" class="text-gray-500 dark:text-gray-300"> <?= $fuel->nama ?></label>
                   </li>
                 <?php } ?>
               </ul>

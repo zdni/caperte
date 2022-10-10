@@ -33,6 +33,9 @@
                               <input type="text" class="form-control" name="nama" id="nama">
                             </div>
                             <div class="form-group">
+                              <button type="button" class="btn btn-sm btn-secondary" id="btn-get-location" name="btn-get-location">Dapatkan Lokasi Saat Ini</button>
+                            </div>
+                            <div class="form-group">
                               <label for="">Longitude</label>
                               <input type="text" class="form-control" name="longi" id="longi">
                             </div>
@@ -47,6 +50,7 @@
                             <div class="form-group">
                               <label for="">Admin</label>
                               <select name="user_id" id="user_id" class="form-control">
+                                <option value="">-- Pilih Admin --</option>
                                 <?php foreach ($users as $user) { ?>
                                   <option value="<?= $user->id ?>"><?= $user->name ?></option>
                                 <?php } ?>
@@ -99,6 +103,9 @@
                                         <label for="">Nama</label>
                                         <input type="text" class="form-control" name="nama" id="nama" value="<?= $data->nama ?>">
                                       </div>
+                                      <div class="col-12">
+                                        <button class="btn btn-sm btn-secondary">Dapatkan Lokasi Saat Ini</button>
+                                      </div>
                                       <div class="form-group">
                                         <label for="">Longitude</label>
                                         <input type="text" class="form-control" name="longi" id="longi" value="<?= $data->longi ?>">
@@ -114,6 +121,7 @@
                                       <div class="form-group">
                                         <label for="">Admin</label>
                                         <select name="user_id" id="user_id" class="form-control">
+                                          <option value="">-- Pilih Admin --</option>
                                           <?php foreach ($users as $user) { ?>
                                             <option <?php if( $user->id == $data->user_id ) echo 'selected' ?> value="<?= $user->id ?>"><?= $user->name ?></option>
                                           <?php } ?>
@@ -163,3 +171,32 @@
         </div>
       </div>
     </div>
+
+
+    <script>
+      const btnGetLocation = document.querySelector('#btn-get-location');
+
+      btnGetLocation.addEventListener('click', function(){
+        const self = this;
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          alert("Geolocation is not supported by this browser.");
+        }
+
+        function showPosition(position) {
+          const parentElement = self.parentElement;
+          const divLng = parentElement.nextElementSibling;
+          const divLat = divLng.nextElementSibling;
+
+          const inputLng = divLng.children[1];
+          const inputLat = divLat.children[1];
+
+          let lat = position.coords.latitude;
+          let lng = position.coords.longitude;
+          
+          inputLat.value = lat;
+          inputLng.value = lng;
+        }
+      });
+    </script>

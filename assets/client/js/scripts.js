@@ -76,6 +76,8 @@ if (stickyHeader) {
   });
 }
 
+const url = document.querySelector('#url');
+
 // hero-section-header
 const heroStickyHeader = document.querySelector(".hero-sticky-header");
 if (heroStickyHeader) {
@@ -219,98 +221,84 @@ if (loader) {
 // map started
 let map;
 
-function initMap() {
-  var options = {
-    center: { lat: 42.3601, lng: -71.0589 },
-    zoom: 8,
-  };
+async function initMap() {
+  let markStations = [];
 
-  var map = new google.maps.Map(document.getElementById("map"), options);
+  const stations = await ( await fetch( url.value + 'dashboard/ambil_spbu_json' ) ).json();
+  stations.forEach(station => {
+    markStations.push({
+      coords: {lat: parseFloat(station.lat), lng: parseFloat(station.longi)},
+      iconImage: url.value + 'assets/img/icon.png',
+      content: '<img class="w-44 mb-4 h-auto" style="width: 100px;" src="'+url.value+'uploads/station/'+station.image+'"> <a href="'+url.value+'dashboard/spbu/'+station.id+'" class="text-base mb-3 focus:outline-none font-semibold hover:text-blue-500">Lihat</a> <p class="text-gray-500"> '+ station.nama +'</p>',
+    })
+  });
 
-  let markers = [
-    // {
-    //   coords: { lat: 42.4668, lng: -70.949493 },
-    //   iconImage:
-    //     "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-    //   content:
-    //     '<img class="w-44 mb-4 h-auto rounded-lg" src="img/Image/landing-page-image/researching.jpg"> <a href="#" class="text-base mb-3 focus:outline-none font-semibold hover:text-blue-500">UI Lib</a> <p class="text-gray-500"> 3043 24th Street East, Austin,</p>',
-    // },
-    // {
-    //   coords: { lat: 42.2626, lng: -71.8023 },
-    //   iconImage:
-    //     "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-    //   content:
-    //     '<img class="w-44  mb-4 h-auto object-cover rounded-lg" src="img/Image/landing-page-image/home-decor.jpg"> <a href="#" class="text-base mb-3 focus:outline-none font-semibold hover:text-blue-500">Resturant</a> <p class="text-gray-500"> 3043 24th New York, Austin,</p>',
-    // },
-    // {
-    //   coords: { lat: 42.8584, lng: -70.93 },
-    //   iconImage:
-    //     "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-    //   content:
-    //     '<img class="w-44 mb-4 h-auto rounded-lg" src="img/Image/landing-page-image/concert.jpg"> <a href="#" class="text-base mb-3 focus:outline-none font-semibold hover:text-blue-500">Concert</a> <p class="text-gray-500"> 3043 24th New York, Austin,</p>',
-    // },
-    // {
-    //   coords: { lat: 42.6526, lng: -73.7562 },
-    //   iconImage:
-    //     "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-    //   content:
-    //     ' <img class="w-44 mb-4 h-auto rounded-lg" src="img/Image/landing-page-image/coffee-house.jpg"> <a href="#" class="text-base mb-3 focus:outline-none font-semibold hover:text-blue-500">Starbucks</a> <p class="text-gray-500"> 3043 24th New York, Austin,</p>',
-    // },
-    // {
-    //   coords: { lat: 42.6526, lng: -71.7562 },
-    //   iconImage:
-    //     "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-    //   content:
-    //     ' <img class="w-44 mb-4 h-auto rounded-lg" src="img/Image/resturant/2.jpg"> <a href="#" class="text-base mb-3 focus:outline-none font-semibold hover:text-blue-500">Starbucks</a> <p class="text-gray-500"> 3043 24th New York, Austin,</p>',
-    // },
-  ];
 
-  // addMarker({
-  //   coords: { lat: 42.4668, lng: -70.949493 },
-  //   iconImage:
-  //     "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-  //   content: '<h6 class="font-semibold">UI Lib</h6>',
-  // });
-
-  // add marker functions
-  const infoWindows = [];
-  function addMarker({ coords, iconImage, content }, markerId) {
-    const marker = new google.maps.Marker({
-      position: coords,
-      map,
-      // icon: props.iconImage,
-    });
-
-    // check for custom icons
-    if (iconImage) {
-      // set icon image
-      marker.setIcon(iconImage);
-    }
-    // check content
-    if (content) {
-      const infoWindow = new google.maps.InfoWindow({
-        content,
-      });
-      infoWindows.push(infoWindow);
-      marker.addListener("click", () => {
-        infoWindows.forEach((infoWindow) => {
-          infoWindow.close();
-        });
-        infoWindow.open(map, marker);
-      });
-      const card = document.getElementById(`${markerId}`);
-      card?.addEventListener("mouseover", () => {
-        infoWindows.forEach((infoWindow) => {
-          infoWindow.close();
-        });
-        infoWindow.open(map, marker);
-      });
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      alert("Geolocation is not supported by this browser.");
     }
   }
-
-  for (var i = 0; i < markers.length; i++) {
-    addMarker(markers[i], `map-${i + 1}`);
+  function showPosition(position) {
+    let lat = position.coords.latitude;
+    let lng = position.coords.longitude;
+    
+    // map.setCenter(new google.maps.LatLng(lat, lng));
+    var options = {        
+      center: { lat, lng },
+      zoom: 13,
+    };
+  
+    var map = new google.maps.Map(document.getElementById("map"), options);
+  
+    // add marker functions
+    const infoWindows = [];
+    function addMarker({ coords, iconImage, content }, markerId) {
+      const marker = new google.maps.Marker({
+        position: coords,
+        map,
+        // icon: props.iconImage,
+      });
+  
+      // check for custom icons
+      if (iconImage) {
+        // set icon image
+        marker.setIcon(iconImage);
+      }
+      // check content
+      if (content) {
+        const infoWindow = new google.maps.InfoWindow({
+          content,
+        });
+        infoWindows.push(infoWindow);
+        marker.addListener("click", () => {
+          infoWindows.forEach((infoWindow) => {
+            infoWindow.close();
+          });
+          infoWindow.open(map, marker);
+        });
+        const card = document.getElementById(`${markerId}`);
+        card?.addEventListener("mouseover", () => {
+          infoWindows.forEach((infoWindow) => {
+            infoWindow.close();
+          });
+          infoWindow.open(map, marker);
+        });
+      }
+    }
+    
+    for (var i = 0; i < markStations.length; i++) {
+      addMarker(markStations[i], `map-${i + 1}`);
+    }
+    addMarker({
+      coords: { lat, lng },
+      iconImage: url.value + 'assets/img/people.png',
+      content: '<img class="w-44 mb-4 h-auto" style="width: 10px;" src="'+url.value + 'assets/img/people.png"> <p class="text-gray-500"></p>',
+    })
   }
+  getLocation();
 }
 
 window.initMap = initMap;
