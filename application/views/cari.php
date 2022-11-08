@@ -36,7 +36,7 @@
                 <ul>
                   <?php foreach ($fuels as $fuel) { ?>
                     <li class="mb-2 flex items-center">
-                      <input class="accent-blue-500 w-4 h-4 mr-3 border" type="checkbox" id="fuel[]" name="fuel[]" value="<?= $fuel->id ?>"/>
+                      <input <?php if( in_array($fuel->id, $keyword_fuels) ) echo 'checked' ?> class="accent-blue-500 w-4 h-4 mr-3 border" type="checkbox" id="fuel[]" name="fuel[]" value="<?= $fuel->id ?>"/>
                       <label for="fuel[]" class="text-gray-500 dark:text-gray-300"> <?= $fuel->nama ?></label>
                     </li>
                   <?php } ?>
@@ -65,30 +65,32 @@
                 </div>
                 <div class="pl-7">
                   <div class="grid lg:grid-cols-1 sm:grid-cols-2 grid-cols-1 gap-7">
-                    <div id="map-1" class="cursor-pointer overflow-hidden rounded-t-lg group">
-                      <div class="relative overflow-hidden">
-                        <img
-                          class="w-full h-80 object-cover rounded-t-lg group-hover:scale-105 transition-all"
-                          src="<?= base_url('assets/client/') ?>img/Image/landing-page-image/researching.jpg"
-                          alt=""
-                        />
-                        <div class="absolute bottom-0 top-1/2 flex items-start flex-col justify-end left-0 pb-5 pl-5 pt-2 card-linear-gradient w-full">
-                          <div class="flex text-white items-center mb-2">
-                            <h2 class="text-xl capitalize font-semibold mr-2">
-                              Liam Ancor - Physics Trinee
-                            </h2>
+                    <?php foreach ($datas as $data) { ?>
+                      <div id="station-<?= $data->id ?>" class="cursor-pointer overflow-hidden rounded-t-lg group">
+                        <div class="relative overflow-hidden">
+                          <img
+                            class="w-full h-80 object-cover rounded-t-lg group-hover:scale-105 transition-all"
+                            src="<?= base_url('uploads/station/') . $data->image ?>"
+                            alt=""
+                          />
+                          <div class="absolute bottom-0 top-1/2 flex items-start flex-col justify-end left-0 pb-5 pl-5 pt-2 card-linear-gradient w-full">
+                            <div class="flex text-white items-center mb-2">
+                              <h2 class="text-xl capitalize font-semibold mr-2">
+                                <?= $data->nama ?>
+                              </h2>
+                            </div>
+                            <p class="text-sm font-normal text-white mb-4">
+                              <?= $data->alamat ?>
+                            </p>
                           </div>
-                          <p class="text-sm font-normal text-white mb-4">
-                            New York, USA
-                          </p>
                         </div>
+                        <!-- <div class="flex justify-between p-6 bg-gray-100 dark:bg-foreground rounded-b-lg">
+                          <a href="<?= base_url('dashboard/algorithm?station=&s=rute') ?>" class="text-gray-500 hover:text-pink-600">
+                            Rute
+                          </a>
+                        </div> -->
                       </div>
-                      <div class="flex justify-between p-6 bg-gray-100 dark:bg-foreground rounded-b-lg">
-                        <a href="<?= base_url('dashboard/algorithm?station=&s=rute') ?>" class="text-gray-500 hover:text-pink-600">
-                          Rute
-                        </a>
-                      </div>
-                    </div>
+                    <?php } ?>
                   </div>
                 </div>
               </div>

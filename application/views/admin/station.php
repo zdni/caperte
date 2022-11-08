@@ -15,7 +15,7 @@
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-4">
+            <div class="col-md-4">
               <form action="<?= base_url('admin/station/change_image') ?>" method="post" enctype="multipart/form-data">
                 <div class="card">
                   <div class="card-body">
@@ -23,7 +23,7 @@
                     <img src="<?= base_url('uploads/station/') . $station->image ?>" alt="" class="img-fluid">
                     <div class="form-group mt-2">
                       <label for="">Gambar</label>
-                      <input type="file" name="image" id="image" class="form-control">
+                      <input type="file" name="image" id="image" class="form-control" multiple="multiple">
                     </div>
                   </div>
                   <div class="card-footer">
@@ -32,7 +32,7 @@
                 </div>
               </form>
             </div>
-            <div class="col-8">
+            <div class="col-md-8">
               <form action="<?= base_url('admin/station/ubah') ?>" method="post">
                 <div class="card">
                   <div class="card-body">

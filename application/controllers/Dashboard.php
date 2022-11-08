@@ -25,8 +25,10 @@ class Dashboard extends MY_Controller {
 
     public function cari()
     {
-        $this->data['datas'] = $this->station_model->station()->result();
+        $station_id = $this->input->get('station');
+        $this->data['datas'] = ($station_id) ? $this->station_model->station( $station_id )->result() : [];
         $this->data['fuels'] = $this->fuel_model->fuel()->result();
+        $this->data['keyword_fuels'] = $this->input->get('fuel') ? $this->input->get('fuel') : [] ;
         
         return $this->render('cari', $this->template);
     }
@@ -47,24 +49,32 @@ class Dashboard extends MY_Controller {
         $fuels = $this->input->get('fuel');
         if( !$fuels ) return redirect( base_url() );
         
-        $stations = $this->stock_model->stock( NULL, $fuels )->result();
+        $stations = $this->stock_model->stock( NULL, $fuels, 1)->result();
+        $params = '';
+        $station_ids = [];
         $ways = [];
         foreach ($stations as $station) {
-            if( !in_array($station->id, $ways) ) {
-                $ways[] = (object) [
+            if( !in_array($station->station_id, $station_ids) ) {
+                $params = $params . 'station[]=' . $station->station_id . '&';
+                $station_ids[] = $station->station_id;
+                $ways[] = [
                     'id' => $station->station_id,
                     'nama_spbu' => $station->nama_spbu,
                     'longi' => $station->longi, 
                     'lat' => $station->lat
                 ];
-            }   
+            }
         }
-        print_r( $ways );
+        $params = substr($params, 0, -1);
+        return redirect( base_url('dashboard/cari?' . $params . '&' . $_SERVER['QUERY_STRING']) );
     }
 
     public function ambil_spbu_json()
     {
-        $stations = $this->station_model->station()->result();
+        $station_id = $this->input->get('station');
+        $fuel = $this->input->get('fuel');
+        $stations = [];
+        if( !(!$station_id && $fuel) ) $stations = $this->station_model->station( $station_id )->result();
         
         header('Content-Type: application/json');
         echo json_encode( $stations );

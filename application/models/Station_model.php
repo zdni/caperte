@@ -41,7 +41,10 @@ class Station_model extends CI_Model {
     {
         $this->db->select( $this->_table . '.*' );
         $this->db->select( 'users.name AS uadmin_name' );
-        if( $id ) $this->db->where( $this->_table . '.id', $id);
+        if( $id ) { 
+            if( !is_array( $id ) ) $id = [$id];
+            $this->db->where_in( $this->_table . '.id', $id);
+        }
         $this->db->join(
             'users',
             'users.id = station.user_id',

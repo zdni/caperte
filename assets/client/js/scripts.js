@@ -223,13 +223,19 @@ let map;
 
 async function initMap() {
   let markStations = [];
+  
+  const queryString = window.location.search;
+  // const urlParams = new URLSearchParams(queryString);
+  // const _station = urlParams.get('station')
+  console.log( queryString )
 
-  const stations = await ( await fetch( url.value + 'dashboard/ambil_spbu_json' ) ).json();
+  const stations = await ( await fetch( url.value + 'dashboard/ambil_spbu_json' + queryString ) ).json();
   stations.forEach(station => {
     markStations.push({
       coords: {lat: parseFloat(station.lat), lng: parseFloat(station.longi)},
       iconImage: url.value + 'assets/img/icon.png',
       content: '<img class="w-44 mb-4 h-auto" style="width: 100px;" src="'+url.value+'uploads/station/'+station.image+'"> <a href="'+url.value+'dashboard/spbu/'+station.id+'" class="text-base mb-3 focus:outline-none font-semibold hover:text-blue-500">Lihat</a> <p class="text-gray-500"> '+ station.nama +'</p>',
+      station_id: station.id,
     })
   });
 
@@ -290,7 +296,7 @@ async function initMap() {
     }
     
     for (var i = 0; i < markStations.length; i++) {
-      addMarker(markStations[i], `map-${i + 1}`);
+      addMarker(markStations[i], `station-${ markStations[i].station_id }`);
     }
     addMarker({
       coords: { lat, lng },

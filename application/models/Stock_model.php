@@ -31,7 +31,7 @@ class Stock_model extends CI_Model {
         return false;
     }
 
-    public function stock( $station_id = NULL, $fuel_id = NULL )
+    public function stock( $station_id = NULL, $fuel_id = NULL, $status = NULL )
     {
         $this->db->select( $this->_table . '.*' );
         $this->db->select( 'fuel.nama AS nama_bahan_bakar' );
@@ -45,8 +45,8 @@ class Stock_model extends CI_Model {
                 $fuel_id = [$fuel_id];
             }
             $this->db->where_in( $this->_table . '.fuel_id', $fuel_id);
-            $this->db->where( $this->_table . '.status', 1 );
         }
+        if( is_numeric($status) ) $this->db->where( $this->_table . '.status', $status );
 
         $this->db->join(
             'fuel',
