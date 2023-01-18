@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 06 Okt 2022 pada 00.49
--- Versi server: 8.0.30-0ubuntu0.22.04.1
--- Versi PHP: 8.1.2
+-- Waktu pembuatan: 18 Jan 2023 pada 19.01
+-- Versi server: 8.0.31-0ubuntu0.22.04.1
+-- Versi PHP: 8.1.2-1ubuntu2.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,7 +38,6 @@ CREATE TABLE `fuel` (
 --
 
 INSERT INTO `fuel` (`id`, `nama`, `seq`) VALUES
-(2, 'Solar', 1),
 (3, 'Dexlite', 1),
 (4, 'Pertalite', 1),
 (5, 'Pertamax 98', 1),
@@ -86,13 +85,16 @@ CREATE TABLE `station` (
 --
 
 INSERT INTO `station` (`id`, `nama`, `alamat`, `longi`, `lat`, `image`, `user_id`) VALUES
-(1, 'SPBU Tapak Kuda', 'Korumba, Kec. Mandonga, Kota Kendari, Sulawesi Tenggara 93231                                            ', '122.5239608', '-3.9766688', 'station.jpg', 6),
-(2, 'SPBU Pertamina 74-931.08', 'Jalan Mayjen. Sutoyo, Tipulu, Kendari Barat, Tipulu, Kendari Barat, Tipulu, Kec. Kendari Bar., Kota Kendari, Sulawesi Tenggara 93873', '122.5462973', '-3.9748536', 'station.jpg', 0),
-(3, 'SPBU TERATAI KENDARI', 'Watu-Watu, Kec. Kendari Bar., Kota Kendari, Sulawesi Tenggara 93121', '122.5464131', '-3.9742289', 'station.jpg', 0),
-(4, 'SPBU Martandu', 'Kambu, Kec. Kambu, Kota Kendari, Sulawesi Tenggara 93231', '122.5357394', '-3.9946375', 'station.jpg', 0),
-(5, 'SPBU Anggoya', 'Jl.Banwula Sinapoy, AnggoyaKendari,, Matabubu, Kec. Poasia, Kota Kendari, Sulawesi Tenggara 93231', '122.5563937', '-3.9941393', 'station.jpg', 0),
-(6, 'SPBU Baruga', 'Baruga, Kec. Baruga, Kota Kendari, Sulawesi Tenggara 93116', '122.5020771', '-4.0292163', 'station.jpg', 0),
-(7, 'SPBU Bonggoeya', 'Bonggoeya, Kec. Wua-Wua, Kota Kendari, Sulawesi Tenggara 93117', '122.498574', '-4.0059933', 'station.jpg', 0);
+(1, 'SPBU Tapak Kuda', 'Korumba, Kec. Mandonga, Kota Kendari, Sulawesi Tenggara 93231                                            ', '122.52712', '-3.974646', 'station.jpg', 6),
+(2, 'SPBU Pertamina 74-931.08', 'Jalan Mayjen. Sutoyo, Tipulu, Kendari Barat, Tipulu, Kendari Barat, Tipulu, Kec. Kendari Bar., Kota Kendari, Sulawesi Tenggara 93873', '122.5472884', '-3.9639101', 'station.jpg', 6),
+(3, 'SPBU TERATAI KENDARI', 'Watu-Watu, Kec. Kendari Bar., Kota Kendari, Sulawesi Tenggara 93121', '122.5373901', '-3.9662131', 'station.jpg', 0),
+(4, 'SPBU Martandu', 'Kambu, Kec. Kambu, Kota Kendari, Sulawesi Tenggara 93231', '122.5334421', '-4.0002021', 'station.jpg', 0),
+(5, 'SPBU Anggoya', 'Jl.Banwula Sinapoy, AnggoyaKendari,, Matabubu, Kec. Poasia, Kota Kendari, Sulawesi Tenggara 93231', '122.566853', '-3.9893762', 'station.jpg', 0),
+(6, 'SPBU Baruga', 'Baruga, Kec. Baruga, Kota Kendari, Sulawesi Tenggara 93116', '122.4884659', '-4.0358974', 'station.jpg', 0),
+(7, 'SPBU Bonggoeya', 'Bonggoeya, Kec. Wua-Wua, Kota Kendari, Sulawesi Tenggara 93117', '122.4996289', '-4.0052838', 'station.jpg', 0),
+(8, 'SPBU Rabam', 'Jl. Jend. Ahmad Yani, Bende, Kec. Kadia, Kota Kendari, Sulawesi Tenggara 93111', '122.5104988', '-3.9814668', 'station.jpg', 6),
+(10, 'SPBU Polres Kendari', 'Bonggoeya, Kec. Wua-Wua, Kota Kendari, Sulawesi Tenggara 93117', '122.5017045', '-4.0123573', 'station.jpg', 6),
+(11, 'SPBU THR', 'Jl. Budi Utomo No.34, Mataiwoi, Kec. Wua-Wua, Kota Kendari, Sulawesi Tenggara 93115', '122.5019085', '-3.9865145', 'station.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -113,12 +115,12 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`id`, `station_id`, `fuel_id`, `harga`, `status`) VALUES
-(3, 1, 2, 6800, 1),
 (4, 1, 3, 17800, 1),
 (5, 1, 9, 18100, 1),
 (6, 1, 4, 10000, 1),
 (7, 1, 6, 14950, 1),
-(8, 1, 5, 13900, 0);
+(8, 1, 5, 13900, 0),
+(10, 2, 6, 13900, 1);
 
 -- --------------------------------------------------------
 
@@ -188,7 +190,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `fuel`
 --
 ALTER TABLE `fuel`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `roles`
@@ -200,13 +202,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT untuk tabel `station`
 --
 ALTER TABLE `station`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
@@ -224,6 +226,12 @@ ALTER TABLE `users`
 ALTER TABLE `stock`
   ADD CONSTRAINT `stock_ibfk_1` FOREIGN KEY (`fuel_id`) REFERENCES `fuel` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `stock_ibfk_2` FOREIGN KEY (`station_id`) REFERENCES `station` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Ketidakleluasaan untuk tabel `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
